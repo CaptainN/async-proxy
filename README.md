@@ -65,6 +65,8 @@ try {
 Supporting Legacy Browsers
 ==========================
 
+Update: For an easier way than the description below, just install [npdev:legacy-proxy-polyfill](https://github.com/CaptainN/npdev-legacy-proxy-polyfill), and forget the rest!
+
 Method and MeteorAsync both rely on JavaScript's `Proxy` class, which is not available in certain older browsers (IE), and is not included in babel-polyfill. While Proxy cannot be completely polyfilled, the Google Chrome Proxy Polyfill does polyfill enough of the API to work with this package.
 
 If you are using meteor 1.7+ (and it's awesome modern/legacy bundle system), and meteor's mainModule config in package.json, you can install the polyfill from npm, and add it to the legacy bundle using meteor's package.json config - this avoids including it in the modern bundle.
