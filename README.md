@@ -101,4 +101,4 @@ Note: Requires native Proxy support. It will not work in older browsers.
 Limitations in Legacy Browsers
 ==============================
 
-An earlier version of this readme incorrectly claimed that Google Chrome's proxy-polyfill could be used to make the Methods proxy function, but it cannot. The polyfill only works with properties defined at specification time. Since we don't have a list of all methods, the Proxy cannot work. If you need support for older browsers (like IE), you can still use the non-proxy based methods, like `callAsync`.
+An earlier version of this readme incorrectly claimed that Google Chrome's proxy-polyfill could be used to make the Methods proxy function, but it cannot. The polyfill only works with properties defined at specification time. Since we don't have a list of all methods, the Proxy cannot work. If you need support for older browsers (like IE), you can still use the non-proxy based methods, like `callAsync` and `getPromise`.
