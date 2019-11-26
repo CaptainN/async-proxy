@@ -7,7 +7,7 @@ Install it from atmosphere:
 
 `meteor add npdev:async-proxy`
 
-There are 3 utilities available:
+Available utilities:
 
 callAsync
 ---------
@@ -16,7 +16,7 @@ callAsync
 import { callAsync } from 'meteor/npdev:async-proxy'
 ```
 
-This methods allows you to call a method using async/await (it returns a Promise) like:
+This function allows you to call a method using async/await (it returns a Promise) like:
 
 ```javascript
 try {
@@ -45,22 +45,58 @@ try {
 }
 ```
 
+Note: Methods is a Proxy, and requires native Proxy support. It will not work in older browsers.
+
 MeteorAsync
 -----------
 
 ```js
-import { Methods } from 'meteor/npdev:async-proxy'
+import { MeteorAsync } from 'meteor/npdev:async-proxy'
 ```
 
-But what about non-methods - it'd be nice to have async there too. MeteorAsync is another proxy for the Meteor object as a whole. It's not very smart about how it wraps commands to properties, so you'll have to be careful.
+But what about non-methods - it'd be nice to have async there too. MeteorAsync is another proxy for the Meteor object as a whole. Note: MeteorAsync does not attempt any sort of correctness check. It works as a simple pass-through to to the wrapped object's properties, and assumes you've accessed a callback style function.
 
-```javascript
+```js
 try {
   var result = await MeteorAsync.loginWithPassword('username', 'password')
 } catch (error) {
   console.error(error)
 }
 ```
+
+Note: Methods is a Proxy, and requires native Proxy support. It will not work in older browsers.
+
+getPromise
+----------
+
+```js
+import { getPromise } from 'meteor/npdev:async-proxy'
+```
+
+`getPromise` can be used to make a promise call from any callback style function.
+
+```js
+await getPromise(Accounts.createUser, { username, password, email })
+```
+
+getProxy
+--------
+
+```js
+import { getProxy } from 'meteor/npdev:async-proxy'
+```
+
+`getProxy` can be used to proxy the callback style methods on any object.
+
+Note: `getProxy` does not attempt any sort of correctness check. It works as a simple pass-through to to the wrapped object's properties, and assumes you've accessed a callback style function.
+
+```js
+import { getProxy } from 'meteor/npdev:async-proxy'
+const AccountsAsync = getProxy(Accounts)
+await AccountsAsync.createUser({ username, password, email })
+```
+
+Note: Requires native Proxy support. It will not work in older browsers.
 
 Supporting Legacy Browsers
 ==========================

@@ -1,31 +1,19 @@
 import { Meteor } from 'meteor/meteor'
 import { ReactiveVar } from 'meteor/reactive-var'
 
-const makePromise = (Thing, key, args) => (
+export const getPromise = (func, ...args) => (
   new Promise(
-    (resolve, reject) => Thing[key](...args, (error, result) => {
+    (resolve, reject) => func(...args, (error, result) => {
       if (error) reject(error)
       resolve(result)
     })
   )
 )
 
-export const callAsync = (...args) => makePromise(Meteor, 'call', args)
-
-export const Methods = new Proxy({}, {
-  get: (obj, key) => (...args) => callAsync(key, ...args)
-})
-
-export const getProxy = (Thing) => (
-  new Proxy({}, {
-    get: (obj, key) => (...args) => makePromise(Thing, key, args)
-  })
-)
-
-export const MeteorAsync = getProxy(Meteor)
+export const callAsync = (...args) => getPromise(Meteor.call, ...args)
 
 export const meteorizePromise = (promise) => {
-  let reactiveVar = new ReactiveVar(false)
+  const reactiveVar = new ReactiveVar(false)
   promise.then(res => {
     reactiveVar.set(res)
   }, err => {
@@ -35,4 +23,18 @@ export const meteorizePromise = (promise) => {
     reactiveVar.set(null)
   })
   return reactiveVar
+}
+
+if (typeof Proxy !== 'undefined') {
+  export const Methods = new Proxy({}, {
+    get: (obj, key) => (...args) => callAsync(key, ...args)
+  })
+
+  export const getProxy = (Thing) => (
+    new Proxy(Thing, {
+      get: (obj, key) => (...args) => getPromise(Thing[key], args)
+    })
+  )
+
+  export const MeteorAsync = getProxy(Meteor)
 }
