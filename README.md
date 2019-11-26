@@ -98,7 +98,7 @@ await AccountsAsync.createUser({ username, password, email })
 
 Note: Requires native Proxy support. It will not work in older browsers.
 
-Supporting Legacy Browsers
-==========================
+Limitations in Legacy Browsers
+==============================
 
-For an easy way to support legacy browsers (IE) just install [npdev:legacy-proxy-polyfill](https://github.com/CaptainN/npdev-legacy-proxy-polyfill). It will provide Google Chrome's Proxy polyfill in the legacy bundle when needed.
+An earlier version of this readme incorrectly claimed that Google Chrome's proxy-polyfill could be used to make the Methods proxy function, but it cannot. The polyfill only works with properties defined at specification time. Since we don't have a list of all methods, the Proxy cannot work. If you need support for older browsers (like IE), you can still use the non-proxy based methods, like `callAsync`.
