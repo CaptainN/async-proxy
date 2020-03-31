@@ -32,7 +32,7 @@ if (typeof Proxy !== 'undefined') {
 
   export const getProxy = (Thing) => (
     new Proxy(Thing, {
-      get: (obj, key) => (...args) => getPromise(Thing[key], args)
+      get: (obj, key) => (...args) => getPromise(Thing[key], ...args)
     })
   )
 

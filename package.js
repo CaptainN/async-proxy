@@ -3,7 +3,7 @@ Package.describe({
   name: 'npdev:async-proxy',
   summary: 'A set of utils to work with Meteor methods and other APIs with async/await',
   description: 'A set of utils to work with Meteor methods and other APIs with async/await',
-  version: '0.2.0',
+  version: '0.2.1',
   git: 'https://github.com/GoogleChrome/proxy-polyfill.git'
 })
 
